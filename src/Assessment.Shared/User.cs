@@ -2,9 +2,9 @@ namespace Assessment.Shared;
 
 using System.Text.Json.Serialization;
 
-public class User
+public record User
 {
-    [JsonPropertyName("mail")] public string? Email { get; set; }
-    [JsonPropertyName("given-name")] public string? GivenName { get; set; }
-    [JsonPropertyName("family-name")] public string? FamilyName { get; set; }
+    [JsonPropertyName("mail")] public string? Email { get; init; }
+    [JsonPropertyName("given-name")] public string? GivenName { get; init; }
+    [JsonPropertyName("family-name")] public string? FamilyName { get; init; }
 }
