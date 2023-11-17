@@ -29,11 +29,7 @@ namespace Assessment.Console.BusinessLogic
                {
                    var split = line.Split(_separator);
 
-                   return new Csv
-                   {
-                       GivenName = split[0].Trim(),
-                       FamilyName = split[1].Trim()
-                   };
+                   return new Csv(split[0].Trim(), split[1].Trim());
                });
 
             return users;

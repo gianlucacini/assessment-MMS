@@ -2,6 +2,11 @@ namespace Assessment.Console.Models;
 
 public class Csv
 {
-    public string? GivenName { get; set; }
-    public string? FamilyName { get; set; }
+    public Csv(string givenName, string familyName)
+    {
+        GivenName = givenName;
+        FamilyName = familyName;
+    }
+    public string? GivenName { get; private set; }
+    public string? FamilyName { get; private set; }
 }
