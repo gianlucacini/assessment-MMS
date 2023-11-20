@@ -11,18 +11,17 @@ using System.Web;
 
 namespace Assessment.Console.BusinessLogic
 {
-    public class UserApiClient
+    public class UserApiClient : IUserApiClient
     {
-        IHttpRequestFactory _httpRequestFactory;
-        public UserApiClient(string origin)
-        {
-            _httpRequestFactory = new HttpRequestFactory(origin);
-        }
+        private readonly HttpClient _httpClient;
+        public UserApiClient(HttpClient httpClient) => _httpClient = httpClient;
         public User GetCompleteUser(ICsv user)
         {
             var builder = BuildRequestUri(user);
 
-            var response = _httpRequestFactory.SendRequestMessage(builder);
+            var request = new HttpRequestMessage(HttpMethod.Get, $"users?{builder}");
+
+            var response = _httpClient.Send(request);
 
             if (!response.IsSuccessStatusCode)
             {

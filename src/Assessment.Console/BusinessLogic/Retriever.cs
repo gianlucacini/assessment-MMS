@@ -13,21 +13,19 @@ namespace Assessment.Console.BusinessLogic
 {
     public class Retriever : IRetriever
     {
-        private readonly string _origin;
-        public Retriever(string origin)
+        private readonly IUserApiClient _client;
+        public Retriever(IUserApiClient client)
         {
-            _origin = origin;
+            _client = client;
         }
 
         public List<User> GetCompleteUsers(IEnumerable<ICsv> users)
         {
-            UserApiClient userApiClient = new UserApiClient(_origin);
-
             var completeUsers = new List<User>();
 
             foreach (var user in users)
             {
-                User completeUser = userApiClient.GetCompleteUser(user);
+                User completeUser = _client.GetCompleteUser(user);
 
                 if (completeUser is null) continue;
 

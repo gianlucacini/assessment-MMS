@@ -28,10 +28,11 @@ void Work()
         path = ReadLine();
     } while (string.IsNullOrEmpty(path) || path.Length < 3);
 
-    var services = new ServiceCollection()
-    .AddTransient<IReader>(rdr => new Reader(path, extension, separator))
-    .AddTransient<IRetriever>(ret => new Retriever(origin))
-    .AddTransient<IWriter>(wri => new Writer(path, extension));
+    var services = new ServiceCollection();
+    services.AddHttpClient<IUserApiClient, UserApiClient>(c => c.BaseAddress = new Uri(origin));
+    services.AddTransient<IReader>(rdr => new Reader(path, extension, separator));
+    services.AddTransient<IRetriever,Retriever>();
+    services.AddTransient<IWriter>(wri => new Writer(path, extension));
 
     var serviceProvider = services.BuildServiceProvider();
 
