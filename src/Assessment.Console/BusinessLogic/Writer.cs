@@ -2,7 +2,7 @@
 
 namespace Assessment.Console.BusinessLogic
 {
-    public class Writer
+    public class Writer : IWriter
     {
         private readonly string _path;
         private readonly string _extension;

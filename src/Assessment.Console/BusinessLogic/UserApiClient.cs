@@ -13,23 +13,16 @@ namespace Assessment.Console.BusinessLogic
 {
     public class UserApiClient
     {
-        private readonly string _origin;
+        IHttpRequestFactory _httpRequestFactory;
         public UserApiClient(string origin)
         {
-            _origin = origin;
+            _httpRequestFactory = new HttpRequestFactory(origin);
         }
-        public User GetCompleteUser(Csv user)
+        public User GetCompleteUser(ICsv user)
         {
-            var client = new HttpClient
-            {
-                BaseAddress = new(_origin)
-            };
-
             var builder = BuildRequestUri(user);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, $"users?{builder}");
-
-            var response = client.Send(request);
+            var response = _httpRequestFactory.SendRequestMessage(builder);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -41,7 +34,7 @@ namespace Assessment.Console.BusinessLogic
             return JsonSerializer.Deserialize<User>(stream);
         }
 
-        private NameValueCollection BuildRequestUri(Csv user)
+        private NameValueCollection BuildRequestUri(ICsv user)
         {
             var builder = HttpUtility.ParseQueryString(string.Empty);
 

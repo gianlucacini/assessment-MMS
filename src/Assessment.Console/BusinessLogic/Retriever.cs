@@ -11,7 +11,7 @@ using static System.Console;
 
 namespace Assessment.Console.BusinessLogic
 {
-    public class Retriever
+    public class Retriever : IRetriever
     {
         private readonly string _origin;
         public Retriever(string origin)
@@ -19,12 +19,12 @@ namespace Assessment.Console.BusinessLogic
             _origin = origin;
         }
 
-        public List<User> GetCompleteUsers(IEnumerable<Csv> users)
+        public List<User> GetCompleteUsers(IEnumerable<ICsv> users)
         {
             UserApiClient userApiClient = new UserApiClient(_origin);
 
             var completeUsers = new List<User>();
-            
+
             foreach (var user in users)
             {
                 User completeUser = userApiClient.GetCompleteUser(user);

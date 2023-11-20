@@ -1,6 +1,6 @@
 namespace Assessment.Console.Models;
 
-public record Csv
+public record Csv : ICsv
 {
     public Csv(string givenName, string familyName)
     {

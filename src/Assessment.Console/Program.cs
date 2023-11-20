@@ -2,6 +2,7 @@
 
 global using static System.Console;
 using Assessment.Console.BusinessLogic;
+using Microsoft.Extensions.DependencyInjection;
 
 const string origin = "http://localhost:5000/";
 const string separator = ";";
@@ -27,23 +28,30 @@ void Work()
         path = ReadLine();
     } while (string.IsNullOrEmpty(path) || path.Length < 3);
 
+    var services = new ServiceCollection()
+    .AddTransient<IReader>(rdr => new Reader(path, extension, separator))
+    .AddTransient<IRetriever>(ret => new Retriever(origin))
+    .AddTransient<IWriter>(wri => new Writer(path, extension));
+
+    var serviceProvider = services.BuildServiceProvider();
+
     #region Reader
 
-    var reader = new Reader(path, extension, separator);
+    var reader = serviceProvider.GetRequiredService<IReader>();
     var users = reader.GetUsersFromCsv();
 
     #endregion
 
     #region Retriever
 
-    var retriever = new Retriever(origin);
+    var retriever = serviceProvider.GetRequiredService<IRetriever>();
     var completeUsers = retriever.GetCompleteUsers(users);
 
     #endregion
 
     #region Writer
 
-    var writer = new Writer(path, extension);
+    var writer = serviceProvider.GetRequiredService<IWriter>();
     writer.WriteUsersToFile(completeUsers);
 
     #endregion

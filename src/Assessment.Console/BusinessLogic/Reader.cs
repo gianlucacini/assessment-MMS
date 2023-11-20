@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Assessment.Console.BusinessLogic
 {
-    public class Reader
+    public class Reader : IReader
     {
         private readonly string _path;
         private readonly string _extension;
@@ -19,11 +19,11 @@ namespace Assessment.Console.BusinessLogic
             _extension = extension;
             _separator = separator;
         }
-        public IEnumerable<Csv> GetUsersFromCsv()
+        public IEnumerable<ICsv> GetUsersFromCsv()
         {
             var lines = File.ReadAllLines(Path.Combine(_path, $"input{_extension}"));
 
-            IEnumerable<Csv> users = lines
+            IEnumerable<ICsv> users = lines
                .Where(line => !string.IsNullOrEmpty(line))
                .Select(line =>
                {
