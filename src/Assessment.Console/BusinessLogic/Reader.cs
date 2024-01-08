@@ -1,4 +1,5 @@
 ﻿using Assessment.Console.Models;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,25 +10,21 @@ namespace Assessment.Console.BusinessLogic
 {
     public class Reader : IReader
     {
-        private readonly string _path;
-        private readonly string _extension;
-        private readonly string _separator;
+        private readonly FileReaderSettings _fileReaderSettings;
 
-        public Reader(string path, string extension, string separator)
+        public Reader(IOptions<FileReaderSettings> fileReaderSettings)
         {
-            _path = path;
-            _extension = extension;
-            _separator = separator;
+            _fileReaderSettings = fileReaderSettings.Value;
         }
         public IEnumerable<ICsv> GetUsersFromCsv()
         {
-            var lines = File.ReadAllLines(Path.Combine(_path, $"input{_extension}"));
+            var lines = File.ReadAllLines(Path.Combine(_fileReaderSettings.FilePath, $"input{_fileReaderSettings.FileExtension}"));
 
             IEnumerable<ICsv> users = lines
                .Where(line => !string.IsNullOrEmpty(line))
                .Select(line =>
                {
-                   var split = line.Split(_separator);
+                   var split = line.Split(_fileReaderSettings.WordSeparator);
 
                    return new Csv(split[0].Trim(), split[1].Trim());
                });

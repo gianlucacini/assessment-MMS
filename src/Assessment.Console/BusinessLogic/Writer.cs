@@ -1,15 +1,15 @@
-﻿using Assessment.Shared;
+﻿using Assessment.Console.Models;
+using Assessment.Shared;
+using Microsoft.Extensions.Options;
 
 namespace Assessment.Console.BusinessLogic
 {
     public class Writer : IWriter
     {
-        private readonly string _path;
-        private readonly string _extension;
-        public Writer(string path, string extension)
+        private readonly FileReaderSettings _fileReaderSettings;
+        public Writer(IOptions<FileReaderSettings> fileReaderSettings)
         {
-            _path = path;
-            _extension = extension;
+            _fileReaderSettings = fileReaderSettings.Value;
         }
 
         public void WriteUsersToFile(List<User> completeUsers)
@@ -20,7 +20,7 @@ namespace Assessment.Console.BusinessLogic
                 return;
             }
 
-            File.WriteAllLines(Path.Combine(_path, $"output_{DateTime.Now:yyyy-MM-dd hh-mm-ss}{_extension}"), completeUsers.Select(user => $"Ciao {user.GivenName} {user.FamilyName} this is your email: {user.Email}"));
+            File.WriteAllLines(Path.Combine(_fileReaderSettings.FilePath, $"output_{DateTime.Now:yyyy-MM-dd hh-mm-ss}{_fileReaderSettings.FileExtension}"), completeUsers.Select(user => $"Ciao {user.GivenName} {user.FamilyName} this is your email: {user.Email}"));
             WriteLine("Done!");
         }
     }
