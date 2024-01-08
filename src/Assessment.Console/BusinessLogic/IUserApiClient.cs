@@ -5,6 +5,6 @@ namespace Assessment.Console.BusinessLogic
 {
     public interface IUserApiClient
     {
-        User GetCompleteUser(ICsv user);
+        Task<User> GetCompleteUser(ICsv user);
     }
 }

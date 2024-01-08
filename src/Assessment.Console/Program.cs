@@ -19,7 +19,7 @@ while (true)
         WriteLine("An error occurred: {0}", e.Message);
     }
 
-void Work()
+async void Work()
 {
     do
     {
@@ -69,7 +69,7 @@ void Work()
     #region Retriever
 
     var retriever = serviceProvider.GetRequiredService<IRetriever>();
-    var completeUsers = retriever.GetCompleteUsers(users);
+    var completeUsers = await retriever.GetCompleteUsers(users);
 
     #endregion
 

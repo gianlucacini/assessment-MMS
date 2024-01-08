@@ -15,13 +15,13 @@ namespace Assessment.Console.BusinessLogic
     {
         private readonly HttpClient _httpClient;
         public UserApiClient(HttpClient httpClient) => _httpClient = httpClient;
-        public User GetCompleteUser(ICsv user)
+        public async Task<User> GetCompleteUser(ICsv user)
         {
             var builder = BuildRequestUri(user);
 
             var request = new HttpRequestMessage(HttpMethod.Get, $"users?{builder}");
 
-            var response = _httpClient.Send(request);
+            var response = await _httpClient.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -29,8 +29,8 @@ namespace Assessment.Console.BusinessLogic
                 return null;
             }
 
-            using var stream = response.Content.ReadAsStream();
-            return JsonSerializer.Deserialize<User>(stream);
+            using var stream = await response.Content.ReadAsStreamAsync();
+            return await JsonSerializer.DeserializeAsync<User>(stream);
         }
 
         private NameValueCollection BuildRequestUri(ICsv user)

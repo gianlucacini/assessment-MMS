@@ -5,6 +5,6 @@ namespace Assessment.Console.BusinessLogic
 {
     public interface IRetriever
     {
-        List<User> GetCompleteUsers(IEnumerable<ICsv> users);
+        Task<List<User>> GetCompleteUsers(IEnumerable<ICsv> users);
     }
 }

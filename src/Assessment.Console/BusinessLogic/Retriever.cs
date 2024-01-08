@@ -19,13 +19,13 @@ namespace Assessment.Console.BusinessLogic
             _client = client;
         }
 
-        public List<User> GetCompleteUsers(IEnumerable<ICsv> users)
+        public async Task<List<User>> GetCompleteUsers(IEnumerable<ICsv> users)
         {
             var completeUsers = new List<User>();
 
             foreach (var user in users)
             {
-                User completeUser = _client.GetCompleteUser(user);
+                User completeUser = await _client.GetCompleteUser(user);
 
                 if (completeUser is null) continue;
 
