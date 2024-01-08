@@ -66,17 +66,16 @@ async void Work()
 
     #endregion
 
-    #region Retriever
+    #region Retriever and Writer
 
     var retriever = serviceProvider.GetRequiredService<IRetriever>();
-    var completeUsers = await retriever.GetCompleteUsers(users);
-
-    #endregion
-
-    #region Writer
-
+   
     var writer = serviceProvider.GetRequiredService<IWriter>();
-    writer.WriteUsersToFile(completeUsers);
+    
+    await foreach(var completeUser in retriever.GetCompleteUsers(users))
+    {
+        writer.WriteUserToFile(completeUser);
+    }
 
     #endregion
 }
